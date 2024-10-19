@@ -1,3 +1,4 @@
+# IMPORTANDO AS BIBLIOTECAS A SEREM UTILIZADAS
 import pandas as pd
 import numpy as np
 from dotenv import load_dotenv
@@ -13,9 +14,6 @@ df_cliente_crm = pd.read_excel(r'files\cliente_crm.xlsx')
 df_cliente_venda = pd.read_excel(r'files\cliente_venda.xlsx')
 df_incorporador = pd.read_excel(r'files\incorporador.xlsx')
 df_empreendimento = pd.read_excel(r'files\empreendimento.xlsx')
-
-
-# TODO: colocar tudo em string menos data e valor de venda, fgts, renda, financiamento
 
 # ajustes tabela venda
 colunas = ['num_venda','num_empreendimento']
