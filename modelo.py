@@ -79,14 +79,13 @@ df_empreendimento[colunas] = df_empreendimento[colunas].apply(lambda x: x.str.ti
 
 # montar tabela fato venda
 fVenda = pd.merge(df_venda,df_corretor_venda,how='right',left_on='num_venda',right_on='num_venda')
-
 fVenda = pd.merge(fVenda,df_cliente_venda,how='right',left_on='num_venda',right_on='num_venda')
 fVenda = fVenda.drop(columns=['valor_fgts','valor_renda','valor_financiamento'])
+
 # montar tabela cliente
 dCliente = pd.merge(df_cliente_crm,df_cliente_venda,how='right',left_on='num_cliente',right_on='num_cliente')
 
 # montar tabela equipe
-
 df_usuario_gerente = df_usuario.copy()
 df_usuario_gerente = df_usuario_gerente.rename({'num_usuario':'num_gerente',
                                                 'nome_usuario':'nome_gerente',
@@ -114,8 +113,6 @@ dProduto = pd.merge(df_empreendimento,df_incorporador,how='left',left_on='num_co
 
 # montar tabela calendario
 
-dCalendario = ''
-
 data_max = fVenda['data_venda'].max().date()
 data_max_str = data_max.strftime('%Y-%m-%d')
 
@@ -123,7 +120,7 @@ data_min = fVenda['data_venda'].min().date()
 data_min_str = data_min.strftime('%Y-%m-%d')
 
 datas = pd.date_range(start=data_min, end=data_max, freq='D')
-# Criar o DataFrame com as colunas desejadas
+
 dCalendario = pd.DataFrame({
     'data': datas,
     'ano': datas.year,
@@ -133,8 +130,7 @@ dCalendario = pd.DataFrame({
     'nome_mes': datas.strftime('%B'),
 })
 
-print(dCalendario)
-
+# salvar os dados em um banco de dados
 
 load_dotenv()
 database_url = os.getenv('db_url')
@@ -147,5 +143,3 @@ dCliente.to_sql('dcliente', con=engine, if_exists='replace', index=False)
 dCalendario.to_sql('dcalendario', con=engine, if_exists='replace', index=False)
 
 engine.dispose()
-
-# salvar os dados em um banco de dados
